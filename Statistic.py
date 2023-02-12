@@ -7,26 +7,24 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 import pandas as pd
 
-districts =[]
+districts = []
 cOVID19Uganda = COVID19Uganda()
+
+
 def mainFun():
     print("Wecome to Jorda AI follow the menu ")
-    print()
+    print("-----------------------------------------")
     print("Enter (1) Import Districts from Covid Data to CSV")
     print("Enter (2) to Import Data From CSV")
-
-    # if(len(cOVID19Uganda.districts)>0):
     print("Enter (3) to get the Summations")
     print("Enter (4) to get Averages")
     print("Enter (5) to get Graphical Stats")
-    print("Eneter 5 to Exit")
-    # else:
-    # print("##### --- Import Data To get More Options --- #####")
-
-
+    print("Enter (6) To Search for a specific District")
+    print("Enter (Q) to Exit")
+    print("-----------------------------------------")
 
     while True:
-        control = input()
+        control = input("Enter Your Option Herer : ")
         if control == "Q":
             print("Thanks For using My Software")
             break
@@ -36,17 +34,25 @@ def mainFun():
             elif int(control) == 2:
                 import_from_csv()
             elif int(control) == 3:
-                sumCoun =   cOVID19Uganda.confirmed_cases_count()
-                print(f"Case counts <> Confirmed Case: {sumCoun.confirmedCases} <> Hospitalised : {sumCoun.hospitalised} <> Deaths : {sumCoun.deaths}")
+                sumCoun = cOVID19Uganda.confirmed_cases_count()
+                print(
+                    f"Case counts <> Confirmed Case: {sumCoun.confirmedCases} <> Hospitalised : {sumCoun.hospitalised} <> Deaths : {sumCoun.deaths}")
             elif int(control) == 4:
-                averages = cOVID19Uganda.averageModifed()
-                print(f"Averages <> Confirmed Case: {averages.confirmedCases} <> Hospitalised : {averages.hospitalised} <> Deaths : {averages.deaths}")
+                averages = cOVID19Uganda.get_average()
+                print(
+                    f"Averages <> Confirmed Case: {averages.confirmedCases} <> Hospitalised : {averages.hospitalised} <> Deaths : {averages.deaths}")
             elif int(control) == 5:
                 generate_stats_for_ten_plot()
+            elif int(control) == 6:
+                district = input("Enter District Name Or Enter Q to Quit: ")
+
+                if district.lower() == "q":
+                    mainFun()
+                else:
+                    cOVID19Uganda.show_district_details(district)
 
 
 def generate_stats_for_ten():
-
     data = cOVID19Uganda.districts
     x = []
     y = []
@@ -62,8 +68,8 @@ def generate_stats_for_ten():
 
     plt.show()
 
-def generate_stats_for_ten_plot():
 
+def generate_stats_for_ten_plot():
     data = cOVID19Uganda.districts
     A = []
     B = []
@@ -79,7 +85,6 @@ def generate_stats_for_ten_plot():
     fig.show()
 
 
-
 def import_from_csv():
     with open('myData.csv', 'r') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -93,13 +98,14 @@ def write_to_scv(data):
     fileName = "myData.csv"
     # print(data)
     with open(fileName, 'w', newline='') as csvfile:
-        fieldnames = ['districtName', 'confirmed', 'active','deaths']
+        fieldnames = ['districtName', 'confirmed', 'active', 'deaths']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
         writer.writeheader()
         for item in data:
             writer.writerow(item)
     return print(f"{len(data)}Districts Have Been Add To the CSV file")
+
 
 def import_data_covid():
     covid = Covid()
@@ -113,8 +119,10 @@ def import_data_covid():
         confirmed = item['confirmed']
         active = item['deaths']
         deaths = item['deaths']
-        pulledDistricts.append({'districtName': districtName, 'confirmed': confirmed, 'active': active, 'deaths': deaths})
+        pulledDistricts.append(
+            {'districtName': districtName, 'confirmed': confirmed, 'active': active, 'deaths': deaths})
 
     return write_to_scv(pulledDistricts)
+
 
 mainFun()
