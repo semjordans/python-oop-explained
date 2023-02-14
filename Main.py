@@ -31,18 +31,25 @@ class COVID19Uganda:
                 district.show_district_info()
 
     def confirmed_cases_count(self):
-        confirmedCases = 0
-        hospitalised = 0
-        deaths = 0
-        for district in self.districts:
-            confirmedCases += int(district.confirmedCases)
-            hospitalised += int(district.hospitalised)
-            deaths += int(district.deaths)
-        return District("SUMS", confirmedCases, hospitalised, deaths)
+        if len(self.districts) > 0:
+            confirmedCases = 0
+            hospitalised = 0
+            deaths = 0
+            for district in self.districts:
+                confirmedCases += int(district.confirmedCases)
+                hospitalised += int(district.hospitalised)
+                deaths += int(district.deaths)
+            return District("SUMS", confirmedCases, hospitalised, deaths)
+        else:
+            print(f"Please Add Some districts To Curry out this Operation")
 
     def get_average(self):
-        totals = len(self.districts)
-        processedTotals = self.confirmed_cases_count()
-        return District("Averages <> ", round(processedTotals.confirmedCases / totals, 0),
-                        round(processedTotals.hospitalised / totals, 0),
-                        round(processedTotals.deaths / totals, 0))
+        if len(self.districts) > 0:
+            totals = len(self.districts)
+            processedTotals = self.confirmed_cases_count()
+            return District("Averages <> ", round(processedTotals.confirmedCases / totals, 0),
+                            round(processedTotals.hospitalised / totals, 0),
+                            round(processedTotals.deaths / totals, 0))
+
+        else:
+            District("Averages <> ", 0, 0, 0)

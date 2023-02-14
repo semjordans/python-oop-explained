@@ -1,16 +1,16 @@
-import matplotlib.pyplot as plt
+import plotly.graph_objs as go
 
-# sample data
-x = ["Home", "hi", "hhj", "hhh", 'kkk']
-y = [2, 4, 6, 8, 10]
+# Example data
+words = ['English', 'Mandarin', 'Hindi', 'Spanish', 'French']
+population = [1132, 1117, 615, 534, 280]
 
-# plot the data as scatter points
-plt.scatter(x, y)
+# Create a bar chart
+fig = go.Figure([go.Bar(x=words, y=population)])
 
-# add a title and labels for the axes
-plt.title("Scatter Plot Example")
-plt.xlabel("X Axis")
-plt.ylabel("Y Axis")
+# Update layout
+fig.update_layout(title='Word Population',
+                  xaxis_title='Word',
+                  yaxis_title='Population')
 
-# show the plot
-plt.show()
+# Show the plot
+fig.show()

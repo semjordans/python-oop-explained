@@ -6,6 +6,8 @@ import json
 import matplotlib.pyplot as plt
 import plotly.express as px
 import pandas as pd
+import numpy as np
+import plotly.graph_objs as go
 
 districts = []
 cOVID19Uganda = COVID19Uganda()
@@ -45,7 +47,6 @@ def mainFun():
                     addMore = int(input("Enter (1) or (0) to Proceed or Stop: "))
 
                     if addMore == 1:
-
                         proceed = True
                     else:
                         mainFun()
@@ -56,36 +57,76 @@ def mainFun():
                 import_from_csv()
             elif int(control) == 3:
                 sumCoun = cOVID19Uganda.confirmed_cases_count()
-                print(
-                    f"Case counts <> Confirmed Case: {sumCoun.confirmedCases} <> Hospitalised : {sumCoun.hospitalised} <> Deaths : {sumCoun.deaths}")
+                if sumCoun is not None:
+                    print(
+                        f"Case counts <> Confirmed Case: {sumCoun.confirmedCases} <> Hospitalised : {sumCoun.hospitalised} <> Deaths : {sumCoun.deaths}")
+                else:
+                    print("NOTE : Please add Some Districts Data to perform This Operation")
+
             elif int(control) == 4:
                 averages = cOVID19Uganda.get_average()
-                print(
-                    f"Averages <> Confirmed Case: {averages.confirmedCases} <> Hospitalised : {averages.hospitalised} <> Deaths : {averages.deaths}")
+                if averages is not None:
+                    print(
+                        f"Averages <> Confirmed Case: {averages.confirmedCases} <> Hospitalised : {averages.hospitalised} <> Deaths : {averages.deaths}")
+                else:
+                    print("NOTE : Please add Some Districts Data to perform This Operation")
+
             elif int(control) == 5:
-                generate_stats_for_ten_plot()
+
+                print("------------Welcome To Our Pretty Graphs---------")
+                print("Enter (C) To Get Confirmed Cases Stats")
+                print("Enter (H) To Get Hospitalised Cases")
+                print("Enter (D) To Get Deaths Stats")
+                print("************************************")
+                print("Enter (Q) To Close Graphical Stats")
+
+                myContinue = True
+                while myContinue:
+                    mySelect = input("Enter Your Option Here : ")
+                    if mySelect.lower() == 'q':
+                        myContinue = False
+                        mainFun()
+                    elif mySelect.lower() == 'c':
+                        generate_stats_for_ten_test("Confirmed")
+                    elif mySelect.lower() == 'h':
+                        generate_stats_for_ten_test('Hospitalised')
+                    elif mySelect.lower() == 'd':
+                        generate_stats_for_ten_test('Deaths')
+                    else:
+                        print("Select Among the Provided Options")
+
             elif int(control) == 6:
                 district = input("Enter District Name Or Enter Q to Quit: ")
-
                 if district.lower() == "q":
                     mainFun()
                 else:
                     cOVID19Uganda.show_district_details(district)
 
 
-def generate_stats_for_ten():
+def generate_stats_for_ten_test(mySelect):
+    # Show the plot
+    plt.show()
     data = cOVID19Uganda.districts
     x = []
     y = []
+    np.random.seed(3)
+    plt.style.use('_mpl-gallery')
 
     for district in data[:5]:
         x.append(district.dictrictName)
-        y.append(district.deaths)
-    plt.scatter(x, y)
+        if mySelect == 'Confirmed':
+            y.append(district.confirmedCases)
+        elif mySelect == 'Hospitalised':
+            y.append(district.hospitalised)
+        elif mySelect == 'Deaths':
+            y.append(district.deaths)
 
-    plt.title("To 5 Districts")
-    plt.xlabel("District")
-    plt.ylabel("Deaths")
+    plt.stem(x, y)
+
+    # Add labels and title
+    plt.xlabel('District')
+    plt.ylabel('Numbers')
+    plt.title('Districts Covid Stats')
 
     plt.show()
 
