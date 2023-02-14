@@ -21,12 +21,12 @@ class COVID19Uganda:
         self.districts.append(district)
 
     def show_district_details(self, searchName):
+        print(searchName)
         for district in self.districts:
             if searchName != None:
-                if searchName.lower() == district.dictrictName.lower():
+                if searchName.casefold() == district.dictrictName.casefold():
                     return district.show_district_info()
-                else:
-                    district.show_district_info()  # print(f"No District called {searchName}")
+                # print(f"No District called {searchName}")
             else:
                 district.show_district_info()
 

@@ -14,6 +14,7 @@ cOVID19Uganda = COVID19Uganda()
 def mainFun():
     print("Wecome to Jorda AI follow the menu ")
     print("-----------------------------------------")
+    print("Enter (0) To Add a District")
     print("Enter (1) Import Districts from Covid Data to CSV")
     print("Enter (2) to Import Data From CSV")
     print("Enter (3) to get the Summations")
@@ -31,6 +32,26 @@ def mainFun():
         else:
             if int(control) == 1:
                 import_data_covid()
+            elif int(control) == 0:
+                proceed = True
+                while proceed:
+                    name = input("Enter District Name : ")
+                    confirmed = int(input("Enter Confirmed Cases : "))
+                    hospitalized = int(input("Enter Hospitalized Cases : "))
+                    deaths = int(input("Enter Death Cases : "))
+                    cOVID19Uganda.add_district(District(name, confirmed, hospitalized, deaths))
+
+                    print(f"{name} : Has been added ")
+                    addMore = int(input("Enter (1) or (0) to Proceed or Stop: "))
+
+                    if addMore == 1:
+
+                        proceed = True
+                    else:
+                        mainFun()
+                        proceed = False
+
+
             elif int(control) == 2:
                 import_from_csv()
             elif int(control) == 3:
